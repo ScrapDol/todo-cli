@@ -1,36 +1,9 @@
+mod task;
+
 use dirs;
-use serde::{Deserialize, Serialize};
 use std::env;
-use std::{fmt, fs, path::PathBuf};
-
-#[derive(Serialize, Deserialize)]
-struct Task {
-    id: u32,
-    description: String,
-    completed: bool,
-}
-
-impl Task {
-    pub fn new(id: u32, description: String) -> Self {
-        Task {
-            id,
-            description,
-            completed: false,
-        }
-    }
-}
-
-impl fmt::Display for Task {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "[{}] {} [{}]",
-            self.id,
-            self.description,
-            if self.completed { "X" } else { " " }
-        )
-    }
-}
+use std::{fs, path::PathBuf};
+use task::Task;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -114,3 +87,15 @@ fn delete_task(id: u32) {
     tasks.remove(usize::try_from(id - 1).expect("error"));
     save_tasks(&tasks)
 }
+
+// TODO: Доделать edit_task
+// fn edit_task(id: u32, new_description: String) {
+//     let mut tasks = load_tasks();
+
+//     if let Some(task) = tasks.iter_mut().find(|t| t.id == id) {
+//         task.description = new_description;
+//         save_tasks(&tasks);
+//     } else {
+//         println!("Task not fount!");
+//     }
+// }
